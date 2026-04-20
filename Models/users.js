@@ -6,5 +6,6 @@ const userstable = new mongoose.schema({
     email: {type: string, required: true}
 } ,{timestamps : true})
 
+
 module.exports = mongoose.models('users', userstable);
 
