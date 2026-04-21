@@ -1,6 +1,6 @@
 const Note = require('../Models/notes');
 
-exports.deletenotes = async(res, req) =>{
+exports.deletenotes = async(req, res) =>{
     try{
         const {id} = req.params;
         const note = await Note.findOneAndDelete({
