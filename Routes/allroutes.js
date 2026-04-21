@@ -10,6 +10,9 @@ const router = express.Router();
 router.post('/signup', signup);
 router.post('/login', login);
 
-router.post('/createnotes', create );
-router.delete('/deletenotes', deletenote);
-router.put('/updatenotes', updated )
+router.post('/createnotes',auth, create );
+router.delete('/deletenotes/:id', auth, deletenote);
+router.put('/updatenotes/:id',auth,  updated )
+
+
+module.exports = router
