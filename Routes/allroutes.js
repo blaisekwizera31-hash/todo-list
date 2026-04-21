@@ -5,7 +5,7 @@ const {createNote} = require('../Controllers/createnotes');
 const {deletenotes} = require('../Controllers/deletenotes')
 const {updateNote}= require('../Controllers/updatenotes')
 const router = express.Router();
-
+const User = require('../Models/users')
 
 router.post('/signup', signup);
 router.post('/login', login);

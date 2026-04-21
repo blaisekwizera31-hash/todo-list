@@ -1,4 +1,5 @@
-const user = require('../Models/users');
+const User = require('../Models/users');
+const jwt = require('jsonwebtoken');
 const bcrypt =require('bcrypt');
 const dotenv = require('dotenv')
 dotenv.config()
@@ -7,7 +8,7 @@ exports.signup = async (req, res) => {
     try{
         const {name , password,email} = req.body;
         const hashedpwd = await bcrypt.hash(password, 10);
-        const user = new User({name, hashedpwd, email});
+        const user = new User({name, password: hashedpwd, email});
 
         await user.save();
 
@@ -30,7 +31,8 @@ exports.login = async (req, res) =>{
         const {name, password} = req.body;
         const user = await User.findOne({name});
         if(!user){
-            res.status(401).json({
+
+           return res.status(401).json({
                 message: "Invalid credentials"
             });
         }
@@ -42,8 +44,12 @@ exports.login = async (req, res) =>{
             }
        const token = jwt.sign(
          { id:user._id, name: user.name, role:user.role },process.env.ACCESS_SECRET,
-         {expiresin: '1h'}
-       )    
+         {expiresIn: '1h'}
+       ) 
+       res.status(200).json({
+        success: true,
+        token: token
+       })   
     }
     catch(error){
         console.error(error)

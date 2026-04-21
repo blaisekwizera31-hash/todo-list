@@ -8,5 +8,5 @@ const userstable = new mongoose.Schema({
 } ,{timestamps : true})
 
 
-module.exports = mongoose.model('users', userstable);
+module.exports = mongoose.model('Users', userstable);
 
