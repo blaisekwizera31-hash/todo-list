@@ -13,8 +13,8 @@ const auth= (req ,res, next) =>{
         })
     }
     try{
-        const cleanedtoken = token.replace('Bearer', '');
-        const verified = jwt.verify(cleanedtoken, 'process.env.ACCESS_SECRET');
+        const cleanedtoken = token.replace('Bearer ', '');
+        const verified = jwt.verify(cleanedtoken, process.env.ACCESS_SECRET);
 
         req.user = verified;
        
