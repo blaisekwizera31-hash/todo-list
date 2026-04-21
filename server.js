@@ -11,8 +11,5 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/", all);
-// app.get('/', (req, res) => {
-//     res.send('The todo list is running')
-// });
 
 
