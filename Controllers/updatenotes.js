@@ -1,6 +1,6 @@
 const Class = require('../Models/notes');
 
-exports.deleteNote = async(req, res) =>{
+exports.updateNote = async(req, res) =>{
     try{
         const {id} = req.params;
         const {title, content, date, notifyme } = req.body;
