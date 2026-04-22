@@ -1,35 +1,40 @@
-const Class = require('../Models/notes');
+const Note = require("../Models/notes");
 
-exports.updateNote = async(req, res) =>{
-    try{
-        const {id} = req.params;
-        const {title, content, date, notifyme } = req.body;
+exports.updateNote = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, content, date } = req.body;
 
-        const updatednote = await Note.findOneAndUpdate({
-            _id: id, userId: req.user.id
-        },
-    {
-        title, content, date, notifyme
-
-    },
-{
-    new: true, runValidators: true
-})
- if(!updatednote){
-    return res.status(401).json({
+    const updatednote = await Note.findOneAndUpdate(
+      {
+        _id: id,
+        userId: req.body.id,
+      },
+      {
+        title,
+        content,
+        date,
+        
+      },
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
+    if (!updatednote) {
+      return res.status(401).json({
         success: false,
-        message: "Message not found"
-    })
- }
- res.status(200).json({
-    success: true,
-    message: "The note is updated successfully"
- })
+        message: "Message not found",
+      });
     }
-    catch(error){
-        res.status(500).json({
-            success: false,
-            message: error.messafe
-        })
-    }
-} 
+    res.status(200).json({
+      success: true,
+      message: "The note is updated successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};

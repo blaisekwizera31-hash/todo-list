@@ -11,7 +11,7 @@ router.post('/signup', signup);
 router.post('/login', login);
 
 router.post('/createnotes', auth, createNote );
-router.delete('/deletenotes/:id', auth, deletenotes);
+router.delete('/deletenotes/:id', deletenotes);
 router.put('/updatenotes/:id',auth,  updateNote )
 
 

@@ -4,7 +4,7 @@ exports.deletenotes = async(req, res) =>{
     try{
         const {id} = req.params;
         const note = await Note.findOneAndDelete({
-            _id: id, userId: req.user.id
+            _id: id, userId: req.body.id
         })
         if(!note){
             return res.status(401).json({
