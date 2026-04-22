@@ -1,18 +1,17 @@
 const express = require('express');
-const {login, signup} = require('../Backend/Controllers/auth');
-const auth = require('../Backend/Controllers/Middleware/authmiddleware')
-const {createNote} = require('../Backend/Controllers/createnotes');
-const {deletenotes} = require('../Backend/Controllers/deletenotes')
-const {updateNote}= require('../Backend/Controllers/updatenotes')
+const { login, signup } = require('../controllers/auth');
+const auth = require('../middleware/authmiddleware');
+const { createNote } = require('../controllers/createnotes');
+const { deletenotes } = require('../controllers/deletenotes');
+const { updateNote } = require('../controllers/updatenotes');
 const router = express.Router();
-const User = require('../Frontend/Models/users')
 
 router.post('/signup', signup);
 router.post('/login', login);
 
-router.post('/createnotes', auth, createNote );
+router.post('/createnotes', auth, createNote);
 router.delete('/deletenotes/:id', deletenotes);
-router.put('/updatenotes/:id',auth,  updateNote )
+router.put('/updatenotes/:id', auth, updateNote);
 
 
-module.exports = router
+module.exports = router;
