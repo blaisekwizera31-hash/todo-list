@@ -10,7 +10,7 @@ const User = require('../Models/users')
 router.post('/signup', signup);
 router.post('/login', login);
 
-router.post('/createnotes',auth, createNote );
+router.post('/createnotes', auth, createNote );
 router.delete('/deletenotes/:id', auth, deletenotes);
 router.put('/updatenotes/:id',auth,  updateNote )
 
