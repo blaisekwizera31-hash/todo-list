@@ -1,4 +1,4 @@
-const Note = require('../Models/notes');
+const Note = require('../../Models/notes');
 
 exports.deletenotes = async(req, res) =>{
     try{

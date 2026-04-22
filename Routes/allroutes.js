@@ -1,11 +1,11 @@
 const express = require('express');
-const {login, signup} = require('../Controllers/auth');
-const auth = require('../Middleware/authmiddleware')
-const {createNote} = require('../Controllers/createnotes');
-const {deletenotes} = require('../Controllers/deletenotes')
-const {updateNote}= require('../Controllers/updatenotes')
+const {login, signup} = require('../Backend/Controllers/auth');
+const auth = require('../Backend/Controllers/Middleware/authmiddleware')
+const {createNote} = require('../Backend/Controllers/createnotes');
+const {deletenotes} = require('../Backend/Controllers/deletenotes')
+const {updateNote}= require('../Backend/Controllers/updatenotes')
 const router = express.Router();
-const User = require('../Models/users')
+const User = require('../Frontend/Models/users')
 
 router.post('/signup', signup);
 router.post('/login', login);
