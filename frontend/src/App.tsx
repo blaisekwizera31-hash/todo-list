@@ -1,9 +1,9 @@
 
-import Login from './Pages/login'
+import Dashboard from './Pages/Dashboard'
 
 const App = () => {
   return (
-    <Login />
+    <Dashboard />
   )
 }
 
