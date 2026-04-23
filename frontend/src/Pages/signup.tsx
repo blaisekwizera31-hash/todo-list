@@ -1,4 +1,5 @@
 import { Button, Field, Flex, HStack, Text, Textarea } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
 const Signup = () => {
   return (
@@ -75,7 +76,7 @@ const Signup = () => {
             Sign up
           </Button>
           <Text>
-            Already have an account? <a href="">Login</a>
+            Already have an account? <a href="./login">Login</a>
           </Text>
         </Flex>
       </Flex>
