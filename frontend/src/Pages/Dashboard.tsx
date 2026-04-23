@@ -1,5 +1,8 @@
 import { MdAdd, MdEdit, MdDelete } from "react-icons/md";
-import { HStack, Grid, GridItem, Box, Flex } from "@chakra-ui/react";
+import { HStack, Grid, GridItem, Box, Flex ,Input, Button} from "@chakra-ui/react";
+import { useState } from "react";
+
+const [isNewnote, setIsNewnote]= useState(false)
 const Dashboard = () => {
   return (
     <>
@@ -55,6 +58,7 @@ const Dashboard = () => {
                 boxShadow: "0 0 0 1px black",
                 cursor: "pointer",
               }}
+              onClick={()=>{setIsNewnote(true)}}
             >
               <HStack justify="center" align="center">
                 <MdAdd fontSize={20} />
@@ -123,7 +127,34 @@ const Dashboard = () => {
           </Flex>
         </GridItem>
         <GridItem border={1} borderColor={"white"} borderStyle={"solid"}>
-          this is grid two
+       {isNewnote ? (
+           
+            <Flex flexDirection="column" gap={4}>
+              <Box>Add New Task</Box>
+              <Input 
+                placeholder="Type your task here..." 
+                color="white" 
+                borderColor="whiteAlpha.600"
+                _placeholder={{ color: "gray.500" }}
+              />
+              <HStack>
+                <Button colorScheme="green" size="sm">Save Task</Button>
+                <Button 
+                  variant="ghost" 
+                  color="red.300" 
+                  size="sm" 
+                  onClick={() => setIsNewnote(false)}
+                >
+                  Cancel
+                </Button>
+              </HStack>
+            </Flex>
+          ) : (
+         
+            <Box color="gray.500" textAlign="center" mt={20}>
+              Click "Create Note" to start adding tasks.
+            </Box>
+          )}
         </GridItem>
       </Grid>
     </>
