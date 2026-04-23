@@ -2,8 +2,9 @@ import { MdAdd, MdEdit, MdDelete } from "react-icons/md";
 import { HStack, Grid, GridItem, Box, Flex ,Input, Button} from "@chakra-ui/react";
 import { useState } from "react";
 
-const [isNewnote, setIsNewnote]= useState(false)
+
 const Dashboard = () => {
+  const [isNewnote, setIsNewnote]= useState(false)
   return (
     <>
       <HStack
@@ -129,15 +130,18 @@ const Dashboard = () => {
         <GridItem border={1} borderColor={"white"} borderStyle={"solid"}>
        {isNewnote ? (
            
-            <Flex flexDirection="column" gap={4}>
-              <Box>Add New Task</Box>
+            <Flex flexDirection="column" gap={4} width={500} marginTop={200} marginLeft={40}>
+              <Box marginLeft={20}>Add New Task</Box>
               <Input 
+              height={100}
+              width={200}
+              marginLeft={20}
                 placeholder="Type your task here..." 
                 color="white" 
                 borderColor="whiteAlpha.600"
                 _placeholder={{ color: "gray.500" }}
               />
-              <HStack>
+              <HStack marginLeft={20}>
                 <Button colorScheme="green" size="sm">Save Task</Button>
                 <Button 
                   variant="ghost" 
@@ -151,8 +155,8 @@ const Dashboard = () => {
             </Flex>
           ) : (
          
-            <Box color="gray.500" textAlign="center" mt={20}>
-              Click "Create Note" to start adding tasks.
+            <Box color="gray.500" textAlign="center" mt={250}>
+              Click "Add Task" to start adding tasks.
             </Box>
           )}
         </GridItem>
