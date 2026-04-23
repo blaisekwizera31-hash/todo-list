@@ -2,12 +2,11 @@ import { Button, Field, Flex, HStack, Text, Textarea } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import API from "../services/api.js";
-import Login from '../Pages/login.js'
 const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
- const [loading, setLoading] = useState(false)
+ const [, setLoading] = useState(false)
  const navigate = useNavigate();
    const handleSignup = async () => {
     if(!name || !password || !email){
