@@ -1,5 +1,9 @@
-const App = () =>{
-  return <h1>Todo list</h1>
+import Signup from './Pages/signup'
+
+const App = () => {
+  return (
+    <Signup />
+  )
 }
 
 export default App
