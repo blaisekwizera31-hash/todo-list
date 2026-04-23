@@ -43,24 +43,52 @@ const Dashboard = () => {
               borderStyle={"solid"}
               borderRadius={10}
               padding={5}
+              backgroundColor="white"
+              color={"black"}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              _hover={{
+                transform: "scale(1.02)",
+                backgroundColor: "#e3e3e7ff",
+                transition: "0.3s ease all",
+                boxShadow: "0 0 0 1px black",
+                cursor: "pointer",
+              }}
             >
-              <HStack>
-                <MdAdd />
-                <Box>Create Note</Box>
+              <HStack justify="center" align="center">
+                <MdAdd fontSize={20} />
+                <Box fontSize={20} fontFamily="serif" fontWeight="bold">
+                  Add task
+                </Box>
               </HStack>
             </Box>
             <Box
               border={1}
               height={150}
               width={250}
-              borderColor={"white"}
+              borderColor={"black"}
               borderStyle={"solid"}
               borderRadius={10}
               padding={5}
+              backgroundColor="white"
+              color="black"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              _hover={{
+                transform: "scale(1.02)",
+                backgroundColor: "#e3e3e7ff",
+                transition: "0.3s ease all",
+                boxShadow: "0 0 0 1px black",
+                cursor: "pointer",
+              }}
             >
-                <HStack>
-                <MdEdit />
-                <Box>Update Note</Box>
+              <HStack justify="center" align="center">
+                <MdEdit fontSize={20} />
+                <Box fontSize={20} fontFamily="serif" fontWeight="bold">
+                  Update Task
+                </Box>
               </HStack>
             </Box>
             <Box
@@ -72,10 +100,24 @@ const Dashboard = () => {
               marginBottom={5}
               borderRadius={10}
               padding={5}
+              backgroundColor="white"
+              color={"black"}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              _hover={{
+                transform: "scale(1.02)",
+                backgroundColor: "#e3e3e7ff",
+                transition: "0.3s ease all",
+                boxShadow: "0 0 0 1px black",
+                cursor: "pointer",
+              }}
             >
-                <HStack>
-                <MdDelete />
-                <Box>Delete Note</Box>
+              <HStack justify="center" align="center">
+                <MdDelete fontSize={20} />
+                <Box fontSize={20} fontFamily="serif" fontWeight="bold">
+                  Delete Task
+                </Box>
               </HStack>
             </Box>
           </Flex>
