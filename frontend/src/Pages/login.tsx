@@ -1,6 +1,6 @@
 import { Button, Field, Flex, HStack, Text, Textarea } from "@chakra-ui/react";
 
-const Signup = () => {
+const Login = () => {
   return (
     <>
       <HStack
@@ -72,4 +72,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default Login;
