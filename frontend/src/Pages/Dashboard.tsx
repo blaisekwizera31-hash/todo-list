@@ -21,7 +21,7 @@ const Dashboard = () => {
 
     const token = localStorage.getItem("userToken");
     if (!token) {
-      navigate("../Pages/Login");
+      navigate("/login");
     } else {
       fetchTasks();
     }
@@ -45,7 +45,7 @@ const Dashboard = () => {
       alert("Please type something");
     }
     try {
-      const response = await API.post("/createnotes", { title: taskTitle, content: tasks });
+      const response = await API.post("/createnotes", { title: taskTitle, content: taskTitle });
       setTasks([...tasks, response.data]);
       setTaskTitle("");
       setIsNewnote(false);

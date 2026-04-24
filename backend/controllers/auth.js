@@ -47,7 +47,7 @@ exports.login = async (req, res) =>{
         }
         const pismatch = await bcrypt.compare(password, user.password)
             if(!pismatch){
-               res.status(401).json({
+               return res.status(401).json({
                 message: "Invalid password"
                })
             }

@@ -30,7 +30,7 @@ exports.updateNote = async (req, res) => {
       success: true,
       data: {
         _id: id,
-        title: newTitle,
+        title: updatednote.title,
         content: content,
       },
     });
