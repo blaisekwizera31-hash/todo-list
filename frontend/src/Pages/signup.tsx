@@ -6,11 +6,11 @@ const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
- const [, setLoading] = useState(false)
- const navigate = useNavigate();
-   const handleSignup = async () => {
-    if(!name || !password || !email){
-      alert("Fill all fields")
+  const [, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const handleSignup = async () => {
+    if (!name || !password || !email) {
+      alert("Fill all fields");
     }
     setLoading(true);
     try {
@@ -20,11 +20,11 @@ const Signup = () => {
         password: password,
       });
       alert("Account created! Now go to login." + response);
-      navigate('/login')
+      navigate("/login");
     } catch (error) {
       alert("Signup failed" + error.response?.data?.message);
     }
-    setLoading(false)
+    setLoading(false);
   };
 
   return (

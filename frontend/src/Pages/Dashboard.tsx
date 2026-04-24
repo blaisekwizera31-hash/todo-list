@@ -1,54 +1,57 @@
 import { MdAdd, MdEdit, MdDelete } from "react-icons/md";
-import { HStack, Grid, GridItem, Box, Flex ,Input, Button} from "@chakra-ui/react";
+import {
+  HStack,
+  Grid,
+  GridItem,
+  Box,
+  Flex,
+  Input,
+  Button,
+} from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import API  from "../services/api.js"
+import API from "../services/api.js";
 const navigate = useNavigate();
 const Dashboard = () => {
-  const [isNewnote, setIsNewnote]= useState(false);
+  const [isNewnote, setIsNewnote] = useState(false);
   const [tasks, setTasks] = useState([]);
   const [taskTitle, setTaskTitle] = useState("");
-  useEffect(() =>{
+  useEffect(() => {
+
     const token = localStorage.getItem("userToken");
+    if (!token) {
+      navigate("../Pages/Login");
+    } else {
+      fetchTasks();
+    }
+  }, [navigate]);
 
-      if(!token){
-        navigate("../Pages/Login");
-      } else{
-        fetchTasks()
-      }
-  }, [navigate]
-    
-    );
-  
   const fetchTasks = async () => {
-    try{
-     const response = await API.get('/getAllnotes');
-     setTasks(response.data);
+    try {
+      const response = await API.get("/getAllnotes");
+      setTasks(response.data);
+    } catch (error: any) {
+      if (error.status == 401) {
+        localStorage.removeItem("userToken");
+        navigate("/Login");
+      }
+      alert(error.message);
     }
-    catch(error: any){
-     if(error.status == 401){
-      localStorage.removeItem("userToken");
-      navigate("/Login")
-     }
-     alert(error.message)
-    }
-  }
+  };
 
-  const handleSaveTask = async ()=>{
-    if(!taskTitle){
+  const handleSaveTask = async () => {
+    if (!taskTitle || !tasks) {
       alert("Please type something");
-  
     }
-    try{
-      const response = await API.post('/createnotes', {title :taskTitle});
-      setTasks([...tasks, response.data])
-      setTaskTitle("")
-setIsNewnote(false)
+    try {
+      const response = await API.post("/createnotes", { title: taskTitle });
+      setTasks([...tasks, response.data]);
+      setTaskTitle("");
+      setIsNewnote(false);
+    } catch (error) {
+      alert("Failed to save");
     }
-    catch(error){
-      alert("Failed to save")
-    }
-  }
+  };
 
   const handleDeletetask = async (id: string) => {
     try {
@@ -57,11 +60,33 @@ setIsNewnote(false)
     } catch (error) {
       alert("Failed to delete task");
     }
+  };
+
+  const handleUpdateTask = async (id: string, currentTitle: string) => {
+  const newTitle = prompt("Edit your task:", currentTitle); 
+  
+  if (!newTitle || newTitle === currentTitle) return;
+
+  try {
+  
+    const response = await API.put(`/updatenotes/${id}`, 
+      { title: newTitle }, 
+  
+    );
+
+    
+    setTasks(tasks.map(t => (t._id === id ? response.data : t)));
+    
+    alert("Task updated!");
+  } catch (error) {
+    alert("Failed to update task.");
   }
- const handleLogout = () => {
-  localStorage.removeItem("userToken");
-  navigate('/Login')
- }
+};  
+  
+  const handleLogout = () => {
+    localStorage.removeItem("userToken");
+    navigate("/Login");
+  };
   return (
     <>
       <HStack
@@ -79,7 +104,12 @@ setIsNewnote(false)
         paddingX={6}
       >
         <Box>Todolist--Dashboard</Box>
-        <Button size="sm" colorScheme="red" variant="outline" onClick={handleLogout}>
+        <Button
+          size="sm"
+          colorScheme="red"
+          variant="outline"
+          onClick={handleLogout}
+        >
           Logout
         </Button>
       </HStack>
@@ -120,7 +150,9 @@ setIsNewnote(false)
                 boxShadow: "0 0 0 1px black",
                 cursor: "pointer",
               }}
-              onClick={()=>{setIsNewnote(true)}}
+              onClick={() => {
+                setIsNewnote(true);
+              }}
             >
               <HStack justify="center" align="center">
                 <MdAdd fontSize={20} />
@@ -149,6 +181,7 @@ setIsNewnote(false)
                 boxShadow: "0 0 0 1px black",
                 cursor: "pointer",
               }}
+              onClick={() => {}}
             >
               <HStack justify="center" align="center">
                 <MdEdit fontSize={20} />
@@ -190,25 +223,33 @@ setIsNewnote(false)
         </GridItem>
         <GridItem border={1} borderColor={"white"} borderStyle={"solid"}>
           {isNewnote && (
-            <Flex flexDirection="column" gap={4} width={500} marginTop={10} marginLeft={40}>
-              <Box marginLeft={20}>Add New Task</Box>
-              <Input 
-              height={100}
-              width={200}
-              marginLeft={20}
-                placeholder="Type your task here..." 
-                color="white" 
+            <Flex
+              flexDirection="column"
+              gap={4}
+              width={500}
+              marginTop={10}
+              marginLeft={40}
+            >
+              <Box marginLeft={20}> + Add New Task</Box>
+              <Input
+                height={100}
+                width={200}
+                marginLeft={20}
+                placeholder="Type your task here..."
+                color="white"
                 borderColor="whiteAlpha.600"
                 _placeholder={{ color: "gray.500" }}
                 value={taskTitle}
                 onChange={(e) => setTaskTitle(e.target.value)}
               />
               <HStack marginLeft={20}>
-                <Button colorScheme="green" size="sm" onClick={handleSaveTask}>Save Task</Button>
-                <Button 
-                  variant="ghost" 
-                  color="red.300" 
-                  size="sm" 
+                <Button colorScheme="green" size="sm" onClick={handleSaveTask}>
+                  Save Task
+                </Button>
+                <Button
+                  variant="ghost"
+                  color="red.300"
+                  size="sm"
                   onClick={() => setIsNewnote(false)}
                 >
                   Cancel
@@ -222,7 +263,12 @@ setIsNewnote(false)
               Click "Add Task" to start adding tasks.
             </Box>
           ) : (
-            <Flex flexDirection="column" gap={3} padding={5} marginTop={isNewnote ? 4 : 0}>
+            <Flex
+              flexDirection="column"
+              gap={3}
+              padding={5}
+              marginTop={isNewnote ? 4 : 0}
+            >
               {tasks.map((task: any) => (
                 <Box
                   key={task._id}
@@ -238,15 +284,26 @@ setIsNewnote(false)
                   justifyContent="space-between"
                 >
                   <Box fontFamily="serif">{task.title}</Box>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    color="red.400"
-                    onClick={() => handleDeletetask(task._id)}
-                    _hover={{ backgroundColor: "red.900" }}
-                  >
-                    <MdDelete fontSize={18} />
-                  </Button>
+                  <HStack>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      color="blue.300"
+                      onClick={() => handleUpdateTask(task._id, task.title)}
+                      _hover={{ backgroundColor: "blue.900" }}
+                    >
+                      <MdEdit fontSize={18} />
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      color="red.400"
+                      onClick={() => handleDeletetask(task._id)}
+                      _hover={{ backgroundColor: "red.900" }}
+                    >
+                      <MdDelete fontSize={18} />
+                    </Button>
+                  </HStack>
                 </Box>
               ))}
             </Flex>

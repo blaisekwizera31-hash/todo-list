@@ -1,30 +1,28 @@
 import { Button, Field, Flex, HStack, Text, Textarea } from "@chakra-ui/react";
-import API from '../services/api.js'
-import {  useNavigate } from "react-router-dom";
+import API from "../services/api.js";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 const Login = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const handleLogin = async () =>{
+  const handleLogin = async () => {
     setIsLoading(true);
-    try{
-
-    const response = await API.post('/login', {
-      name: name,
-      password : password
-     });
-     const token = response.data.token;  
-     localStorage.setItem("userToken", token);
-     alert("Login successful" + response.data);
-     navigate("/frontend/src/Pages/Dashboard.tsx");
+    try {
+      const response = await API.post("/login", {
+        name: name,
+        password: password,
+      });
+      const token = response.data.token;
+      localStorage.setItem("userToken", token);
+      alert("Login successful" + response.data);
+      navigate("/frontend/src/Pages/Dashboard.tsx");
+    } catch (error) {
+      alert(error.message);
     }
- catch(error){
-    alert(error.message)
- }
- setIsLoading(false)
-  }
+    setIsLoading(false);
+  };
   return (
     <>
       <HStack
@@ -65,7 +63,7 @@ const Login = () => {
                 boxShadow: "0 0 0 1px blue",
               }}
               onChange={(e) => {
-               setName(e.target.value)
+                setName(e.target.value);
               }}
             />
           </Field.Root>
@@ -78,8 +76,8 @@ const Login = () => {
                 borderColor: "blue.500",
                 boxShadow: "0 0 0 1px blue",
               }}
-              onChange={(e)=>{
-                setPassword(e.target.value)
+              onChange={(e) => {
+                setPassword(e.target.value);
               }}
             />
           </Field.Root>
@@ -94,9 +92,7 @@ const Login = () => {
           >
             Login
           </Button>
-          <Text>
-           Manage task perfectly
-          </Text>
+          <Text>Manage task perfectly</Text>
         </Flex>
       </Flex>
     </>
