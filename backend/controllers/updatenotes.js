@@ -1,4 +1,4 @@
-const Note = require('../models/notes');
+const Note = require("../models/notes");
 
 exports.updateNote = async (req, res) => {
   try {
@@ -8,13 +8,12 @@ exports.updateNote = async (req, res) => {
     const updatednote = await Note.findOneAndUpdate(
       {
         _id: id,
-        userId: req.body.id,
+        userId: req.user.id,
       },
       {
         title,
         content,
         date,
-        
       },
       {
         new: true,
@@ -29,12 +28,16 @@ exports.updateNote = async (req, res) => {
     }
     res.status(200).json({
       success: true,
-      message: "The note is updated successfully",
+      data: {
+        _id: id,
+        title: newTitle,
+        content: content,
+      },
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: error.message
+      message: error.message,
     });
   }
 };

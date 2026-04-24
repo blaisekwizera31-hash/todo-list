@@ -1,4 +1,4 @@
-import { Button, Field, Flex, HStack, Text, Textarea } from "@chakra-ui/react";
+import { Button, Field, Flex, HStack, Text, Textarea, Input} from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import API from "../services/api.js";
@@ -87,7 +87,8 @@ const Signup = () => {
           </Field.Root>
           <Field.Root>
             <Field.Label>Password</Field.Label>
-            <Textarea
+            <Input
+            type="password"
               borderColor={"white"}
               placeholder="Enter password"
               _focus={{
@@ -113,7 +114,7 @@ const Signup = () => {
           </Button>
           <Text>
             Already have an account?{" "}
-            <Link to="./login" style={{ color: "#F5F5F5" }}>
+            <Link to="/login" style={{ color: "#F5F5F5" }}>
               Login
             </Link>
           </Text>

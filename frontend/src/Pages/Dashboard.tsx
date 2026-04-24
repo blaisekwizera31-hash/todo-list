@@ -11,8 +11,9 @@ import {
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../services/api.js";
-const navigate = useNavigate();
+
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [isNewnote, setIsNewnote] = useState(false);
   const [tasks, setTasks] = useState([]);
   const [taskTitle, setTaskTitle] = useState("");
@@ -33,7 +34,7 @@ const Dashboard = () => {
     } catch (error: any) {
       if (error.status == 401) {
         localStorage.removeItem("userToken");
-        navigate("/Login");
+        navigate("/login");
       }
       alert(error.message);
     }
@@ -44,7 +45,7 @@ const Dashboard = () => {
       alert("Please type something");
     }
     try {
-      const response = await API.post("/createnotes", { title: taskTitle });
+      const response = await API.post("/createnotes", { title: taskTitle, content: tasks });
       setTasks([...tasks, response.data]);
       setTaskTitle("");
       setIsNewnote(false);
@@ -75,7 +76,7 @@ const Dashboard = () => {
     );
 
     
-    setTasks(tasks.map(t => (t._id === id ? response.data : t)));
+    setTasks(tasks.map(t => (t._id === id ? response.data.data : t)));
     
     alert("Task updated!");
   } catch (error) {
@@ -85,7 +86,7 @@ const Dashboard = () => {
   
   const handleLogout = () => {
     localStorage.removeItem("userToken");
-    navigate("/Login");
+    navigate("/login");
   };
   return (
     <>

@@ -2,7 +2,8 @@ const Note = require ("../models/notes");
 
 const getAllNotes = async (req, res) => {
   try{
-    const notes = await Note.find();
+    const userId = req.user.id;
+    const notes = await Note.find({ userId: userId });
     res.status(200).json(notes);
   }
   catch(error){

@@ -5,7 +5,7 @@ exports.createNote = async(req,res)=>{
         const { title, content, date} = req.body;
 
       
-        const userId = req.body.userId
+        const userId = req.user.id
         const newNote = new Note({
             userId,
             title,

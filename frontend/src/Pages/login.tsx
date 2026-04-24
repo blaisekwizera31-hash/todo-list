@@ -1,4 +1,4 @@
-import { Button, Field, Flex, HStack, Text, Textarea } from "@chakra-ui/react";
+import { Button, Field, Flex, HStack, Input, Text, Textarea } from "@chakra-ui/react";
 import API from "../services/api.js";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -17,7 +17,7 @@ const Login = () => {
       const token = response.data.token;
       localStorage.setItem("userToken", token);
       alert("Login successful" + response.data);
-      navigate("/frontend/src/Pages/Dashboard.tsx");
+      navigate("/dashboard");
     } catch (error) {
       alert(error.message);
     }
@@ -69,7 +69,8 @@ const Login = () => {
           </Field.Root>
           <Field.Root>
             <Field.Label>Password</Field.Label>
-            <Textarea
+            <Input
+            type="password"
               borderColor={"white"}
               placeholder="Enter password"
               _focus={{
