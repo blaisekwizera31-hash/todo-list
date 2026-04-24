@@ -17,6 +17,12 @@ const Dashboard = () => {
   const [tasks, setTasks] = useState([]);
   const [taskTitle, setTaskTitle] = useState("");
   const [completedTasks, setCompletedTasks] = useState<Set<string>>(new Set());
+  const [now, setNow] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   const toggleComplete = (id: string) => {
     setCompletedTasks((prev) => {
@@ -114,6 +120,14 @@ const Dashboard = () => {
         >
           <Box fontFamily="serif" fontSize={28} fontWeight="bold" color="white" letterSpacing="wide">
             Todolist
+          </Box>
+          <Box textAlign="center">
+            <Box color="whiteAlpha.900" fontSize={15} fontWeight="semibold">
+              {now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
+            </Box>
+            <Box color="whiteAlpha.600" fontSize={12}>
+              {now.toLocaleDateString([], { weekday: "long", year: "numeric", month: "long", day: "numeric" })}
+            </Box>
           </Box>
           <Button
             size="sm"
