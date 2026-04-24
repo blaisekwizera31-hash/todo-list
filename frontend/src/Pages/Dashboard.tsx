@@ -1,10 +1,34 @@
 import { MdAdd, MdEdit, MdDelete } from "react-icons/md";
 import { HStack, Grid, GridItem, Box, Flex ,Input, Button} from "@chakra-ui/react";
-import { useState } from "react";
-
-
+import Login from "../Pages/login.js"
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import API  from "../services/api.js"
+const navigate = useNavigate();
 const Dashboard = () => {
-  const [isNewnote, setIsNewnote]= useState(false)
+  const [isNewnote, setIsNewnote]= useState(false);
+  const [tasks, setTasks] = useState([]);
+  const [taskTitle, setTaskTitle] = useState("");
+  useEffect(() =>{
+    const token = localStorage.getItem("userToken");
+
+      if(!token){
+        navigate("../Pages/Login");
+      } else{
+        fetchTasks()
+      }
+  }, [navigate]
+    
+    );
+  
+  const fetchTasks = async () => {
+    try{
+     const response = await API.get('/')
+    }
+    catch(error){
+
+    }
+  }
   return (
     <>
       <HStack
