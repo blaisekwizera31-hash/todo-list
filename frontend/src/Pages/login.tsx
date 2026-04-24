@@ -1,102 +1,122 @@
-import { Button, Field, Flex, HStack, Input, Text, Textarea } from "@chakra-ui/react";
+import { Button, Field, Flex, Box, Input, Text } from "@chakra-ui/react";
 import API from "../services/api.js";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { Link } from "react-router-dom";
+
 const Login = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [, setIsLoading] = useState(false);
   const navigate = useNavigate();
+
   const handleLogin = async () => {
     setIsLoading(true);
     try {
-      const response = await API.post("/login", {
-        name: name,
-        password: password,
-      });
+      const response = await API.post("/login", { name, password });
       const token = response.data.token;
       localStorage.setItem("userToken", token);
-      alert("Login successful" + response.data);
       navigate("/dashboard");
     } catch (error) {
       alert(error.message);
     }
     setIsLoading(false);
   };
+
   return (
-    <>
-      <HStack
-        border={1}
-        borderColor={"white"}
-        borderStyle={"solid"}
-        height={20}
-        borderRadius={10}
-        align="center"
-        justify="center"
-        fontFamily="serif"
-        fontSize={28}
-        fontWeight="bold"
+    <div
+      style={{
+        minHeight: "100vh",
+        backgroundImage: "url('/image.png')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        position: "relative",
+      }}
+    >
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: "rgba(0,0,0,0.5)",
+          zIndex: 0,
+        }}
+      />
+
+      <Flex
+        position="relative"
+        zIndex={1}
+        flexDirection="column"
+        gap={5}
+        width={400}
+        padding={10}
+        borderRadius={16}
+        backgroundColor="rgba(255,255,255,0.08)"
+        border="1px solid rgba(255,255,255,0.18)"
+        style={{ backdropFilter: "blur(14px)" }}
+        boxShadow="0 8px 32px rgba(0,0,0,0.45)"
       >
-        Todo list---Login
-      </HStack>
-      <Flex align="center" justify="center" marginTop={20}>
-        <Flex
-          border={1}
-          width={420}
-          height={500}
-          borderColor={"white"}
-          borderStyle={"solid"}
-          borderRadius={15}
-          padding={10}
-          justify="center"
-          align="center"
-          flexDirection={"column"}
-          gap={4}
+        <Box
+          fontFamily="serif"
+          fontSize={26}
+          fontWeight="bold"
+          color="white"
+          textAlign="center"
+          mb={2}
         >
-          <Field.Root>
-            <Field.Label>Names</Field.Label>
-            <Textarea
-              borderColor={"white"}
-              placeholder="Enter names"
-              _focus={{
-                borderColor: "blue.500",
-                boxShadow: "0 0 0 1px blue",
-              }}
-              onChange={(e) => {
-                setName(e.target.value);
-              }}
-            />
-          </Field.Root>
-          <Field.Root>
-            <Field.Label>Password</Field.Label>
-            <Input
+          Welcome Back
+        </Box>
+
+        <Field.Root>
+          <Field.Label color="whiteAlpha.800" fontSize={13}>Username</Field.Label>
+          <Input
+            placeholder="Enter your name"
+            color="white"
+            borderColor="whiteAlpha.400"
+            borderRadius={8}
+            _placeholder={{ color: "gray.500" }}
+            _focus={{ borderColor: "blue.400", boxShadow: "0 0 0 1px #4299e1" }}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </Field.Root>
+
+        <Field.Root>
+          <Field.Label color="whiteAlpha.800" fontSize={13}>Password</Field.Label>
+          <Input
             type="password"
-              borderColor={"white"}
-              placeholder="Enter password"
-              _focus={{
-                borderColor: "blue.500",
-                boxShadow: "0 0 0 1px blue",
-              }}
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-            />
-          </Field.Root>
-          <Button
-            width={"full"}
-            _hover={{
-              transform: "scale(1.02)",
-              borderColor: "black.500",
-              boxShadow: "0 0 0 1px black",
-            }}
-            onClick={handleLogin}
-          >
-            Login
-          </Button>
-          <Text>Manage task perfectly</Text>
-        </Flex>
+            placeholder="Enter your password"
+            color="white"
+            borderColor="whiteAlpha.400"
+            borderRadius={8}
+            _placeholder={{ color: "gray.500" }}
+            _focus={{ borderColor: "blue.400", boxShadow: "0 0 0 1px #4299e1" }}
+            onChange={(e) => setPassword(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleLogin()}
+          />
+        </Field.Root>
+
+        <Button
+          width="full"
+          borderRadius={8}
+          colorScheme="blue"
+          mt={1}
+          _hover={{ transform: "scale(1.02)", transition: "0.2s" }}
+          onClick={handleLogin}
+        >
+          Login
+        </Button>
+
+        <Text color="whiteAlpha.600" textAlign="center" fontSize={13}>
+          Don't have an account?{" "}
+          <Link to="/" style={{ color: "#90cdf4" }}>
+            Sign up
+          </Link>
+        </Text>
       </Flex>
-    </>
+    </div>
   );
 };
 
