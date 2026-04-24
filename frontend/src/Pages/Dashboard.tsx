@@ -1,6 +1,5 @@
 import { MdAdd, MdEdit, MdDelete } from "react-icons/md";
 import { HStack, Grid, GridItem, Box, Flex ,Input, Button} from "@chakra-ui/react";
-import Login from "../Pages/login.js"
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import API  from "../services/api.js"
@@ -23,12 +22,46 @@ const Dashboard = () => {
   
   const fetchTasks = async () => {
     try{
-     const response = await API.get('/')
+     const response = await API.get('/getAllnotes');
+     setTasks(response.data);
     }
-    catch(error){
-
+    catch(error: any){
+     if(error.status == 401){
+      localStorage.removeItem("userToken");
+      navigate("/Login")
+     }
+     alert(error.message)
     }
   }
+
+  const handleSaveTask = async ()=>{
+    if(!taskTitle){
+      alert("Please type something");
+  
+    }
+    try{
+      const response = await API.post('/createnotes', {title :taskTitle});
+      setTasks([...tasks, response.data])
+      setTaskTitle("")
+setIsNewnote(false)
+    }
+    catch(error){
+      alert("Failed to save")
+    }
+  }
+
+  const handleDeletetask = async (id: string) => {
+    try {
+      await API.delete(`/deletenotes/${id}`);
+      setTasks(tasks.filter((task: any) => task._id !== id));
+    } catch (error) {
+      alert("Failed to delete task");
+    }
+  }
+ const handleLogout = () => {
+  localStorage.removeItem("userToken");
+  navigate('/Login')
+ }
   return (
     <>
       <HStack
@@ -38,13 +71,17 @@ const Dashboard = () => {
         height={20}
         borderRadius={10}
         align="center"
-        justify="center"
+        justify="space-between"
         fontFamily="serif"
         fontSize={28}
         fontWeight="bold"
         width="1000"
+        paddingX={6}
       >
-        Todolist--Dashboard
+        <Box>Todolist--Dashboard</Box>
+        <Button size="sm" colorScheme="red" variant="outline" onClick={handleLogout}>
+          Logout
+        </Button>
       </HStack>
 
       <Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }} width="1000">
@@ -152,9 +189,8 @@ const Dashboard = () => {
           </Flex>
         </GridItem>
         <GridItem border={1} borderColor={"white"} borderStyle={"solid"}>
-       {isNewnote ? (
-           
-            <Flex flexDirection="column" gap={4} width={500} marginTop={200} marginLeft={40}>
+          {isNewnote && (
+            <Flex flexDirection="column" gap={4} width={500} marginTop={10} marginLeft={40}>
               <Box marginLeft={20}>Add New Task</Box>
               <Input 
               height={100}
@@ -164,9 +200,11 @@ const Dashboard = () => {
                 color="white" 
                 borderColor="whiteAlpha.600"
                 _placeholder={{ color: "gray.500" }}
+                value={taskTitle}
+                onChange={(e) => setTaskTitle(e.target.value)}
               />
               <HStack marginLeft={20}>
-                <Button colorScheme="green" size="sm">Save Task</Button>
+                <Button colorScheme="green" size="sm" onClick={handleSaveTask}>Save Task</Button>
                 <Button 
                   variant="ghost" 
                   color="red.300" 
@@ -177,11 +215,41 @@ const Dashboard = () => {
                 </Button>
               </HStack>
             </Flex>
-          ) : (
-         
+          )}
+
+          {tasks.length === 0 && !isNewnote ? (
             <Box color="gray.500" textAlign="center" mt={250}>
               Click "Add Task" to start adding tasks.
             </Box>
+          ) : (
+            <Flex flexDirection="column" gap={3} padding={5} marginTop={isNewnote ? 4 : 0}>
+              {tasks.map((task: any) => (
+                <Box
+                  key={task._id}
+                  border={1}
+                  borderColor="whiteAlpha.400"
+                  borderStyle="solid"
+                  borderRadius={8}
+                  padding={4}
+                  backgroundColor="whiteAlpha.100"
+                  color="white"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
+                  <Box fontFamily="serif">{task.title}</Box>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    color="red.400"
+                    onClick={() => handleDeletetask(task._id)}
+                    _hover={{ backgroundColor: "red.900" }}
+                  >
+                    <MdDelete fontSize={18} />
+                  </Button>
+                </Box>
+              ))}
+            </Flex>
           )}
         </GridItem>
       </Grid>
