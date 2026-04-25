@@ -36,7 +36,7 @@ const Signup = () => {
       align="center"
       justify="center"
       position="relative"
-      backgroundImage="url('/image.png')"
+      backgroundImage="url('/1.png')"
       backgroundSize="cover"
       backgroundPosition="center"
     >

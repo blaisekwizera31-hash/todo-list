@@ -98,7 +98,7 @@ const Dashboard = () => {
     <div
       style={{
         minHeight: "100vh",
-        backgroundImage: "url('/image.png')",
+        backgroundImage: "url('/1.png')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
