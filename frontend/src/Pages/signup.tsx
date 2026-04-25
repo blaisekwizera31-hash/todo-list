@@ -23,6 +23,7 @@ const Signup = () => {
     } catch (error: unknown) {
       const message =
         (error as { response?: { data?: { message?: string } } })?.response?.data?.message ?? "";
+        console.log(error);
       alert(`Signup failed ${message}`);
     } finally {
       setLoading(false);
