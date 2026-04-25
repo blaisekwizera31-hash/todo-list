@@ -14,7 +14,7 @@ import API from "../services/api.js";
 const Dashboard = () => {
   const navigate = useNavigate();
   const [isNewnote, setIsNewnote] = useState(false);
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState<any[]>([]);
   const [taskTitle, setTaskTitle] = useState("");
   const [completedTasks, setCompletedTasks] = useState<Set<string>>(new Set());
   const [now, setNow] = useState(new Date());

@@ -17,7 +17,7 @@ const Login = () => {
       const token = response.data.token;
       localStorage.setItem("userToken", token);
       navigate("/dashboard");
-    } catch (error) {
+    } catch (error: any) {
       alert(error.message);
     }
     setIsLoading(false);
