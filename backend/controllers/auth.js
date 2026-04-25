@@ -6,6 +6,7 @@ dotenv.config();
 
 exports.signup = async (req, res) => {
     try{
+        console.log("Request reached");
         const {name , password, email} = req.body;
 
         const user = await User.findOne({email});
@@ -16,6 +17,7 @@ exports.signup = async (req, res) => {
                 message: "User already exists"
             })
         }
+      
         const hashedpwd = await bcrypt.hash(password, 10);
         const newUser = new User({name, password: hashedpwd, email});
 
