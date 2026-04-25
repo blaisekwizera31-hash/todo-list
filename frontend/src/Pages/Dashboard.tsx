@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import API from "../services/api.js";
+import API from "../services/api";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -46,11 +46,11 @@ const Dashboard = () => {
       const response = await API.get("/getAllnotes");
       setTasks(response.data);
     } catch (error: any) {
-      if (error.status == 401) {
+      if (error?.response?.status === 401) {
         localStorage.removeItem("userToken");
         navigate("/login");
       }
-      alert(error.message);
+      alert(error.message ?? "Failed to load tasks.");
     }
   };
 

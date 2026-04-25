@@ -7,13 +7,14 @@ exports.deletenotes = async(req, res) =>{
             _id: id, userId: req.user.id
         })
         if(!note){
-            return res.status(401).json({
-
+            return res.status(404).json({
+                success: false,
+                message: "Note not found or not authorized"
             })
-        
-    }
+        }
         res.status(200).json({
-        message: "Note deleted"
+            success: true,
+            message: "Note deleted"
         })
             
     

@@ -1,5 +1,5 @@
 import { Button, Field, Flex, Box, Input, Text } from "@chakra-ui/react";
-import API from "../services/api.js";
+import API from "../services/api";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 const Login = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async () => {
@@ -18,9 +18,10 @@ const Login = () => {
       localStorage.setItem("userToken", token);
       navigate("/dashboard");
     } catch (error: any) {
-      alert(error.message);
+      alert(error?.response?.data?.message ?? error.message ?? "Login failed.");
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   return (
@@ -103,6 +104,7 @@ const Login = () => {
           borderRadius={8}
           colorScheme="blue"
           mt={1}
+          loading={isLoading}
           _hover={{ transform: "scale(1.02)", transition: "0.2s" }}
           onClick={handleLogin}
         >

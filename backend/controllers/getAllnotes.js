@@ -7,10 +7,9 @@ const getAllNotes = async (req, res) => {
     res.status(200).json(notes);
   }
   catch(error){
-    res.status(401).json({
+    res.status(500).json({
         success: false,
         message: error.message
-
     })
   }
 }
