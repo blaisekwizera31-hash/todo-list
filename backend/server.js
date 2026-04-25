@@ -6,14 +6,6 @@ const all = require('./routes/allroutes');
 
 dotenv.config();
 
-const requiredEnv = ["MONGO_URI", "ACCESS_SECRET"];
-for (const key of requiredEnv) {
-  if (!process.env[key]) {
-    console.error(`Missing required environment variable: ${key}`);
-    process.exit(1);
-  }
-}
-
 const app = express();
 
 const connectDB = async () => {
@@ -29,12 +21,8 @@ const connectDB = async () => {
 connectDB();
 
 app.use(express.json());
-app.use(
-  cors({
-    origin: process.env.FRONTEND_URL || true,
-    credentials: true,
-  }),
-);
+app.use(cors());
+
 
 app.use("/", all);
 
