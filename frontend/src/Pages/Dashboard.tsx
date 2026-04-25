@@ -6,6 +6,7 @@ import {
   Input,
   Button,
   Text,
+  Spinner,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -18,6 +19,9 @@ const Dashboard = () => {
   const [taskTitle, setTaskTitle] = useState("");
   const [completedTasks, setCompletedTasks] = useState<Set<string>>(new Set());
   const [now, setNow] = useState(new Date());
+  const [isSavingTask, setIsSavingTask] = useState(false);
+  const [deletingTaskId, setDeletingTaskId] = useState<string | null>(null);
+  const [updatingTaskId, setUpdatingTaskId] = useState<string | null>(null);
 
   useEffect(() => {
     const timer = setInterval(() => setNow(new Date()), 1000);
@@ -55,10 +59,11 @@ const Dashboard = () => {
   };
 
   const handleSaveTask = async () => {
-    if (!taskTitle) {
+    if (!taskTitle.trim()) {
       alert("Please type something");
       return;
     }
+    setIsSavingTask(true);
     try {
       await API.post("/createnotes", { title: taskTitle, content: taskTitle });
       await fetchTasks();
@@ -66,26 +71,34 @@ const Dashboard = () => {
       setIsNewnote(false);
     } catch (error) {
       alert("Failed to save");
+    } finally {
+      setIsSavingTask(false);
     }
   };
 
   const handleDeletetask = async (id: string) => {
+    setDeletingTaskId(id);
     try {
       await API.delete(`/deletenotes/${id}`);
       setTasks(tasks.filter((task: any) => task._id !== id));
     } catch (error) {
       alert("Failed to delete task");
+    } finally {
+      setDeletingTaskId(null);
     }
   };
 
   const handleUpdateTask = async (id: string, currentTitle: string) => {
     const newTitle = prompt("Edit your task:", currentTitle);
     if (!newTitle || newTitle === currentTitle) return;
+    setUpdatingTaskId(id);
     try {
       const response = await API.put(`/updatenotes/${id}`, { title: newTitle });
       setTasks(tasks.map((t: any) => (t._id === id ? response.data.data : t)));
     } catch (error) {
       alert("Failed to update task.");
+    } finally {
+      setUpdatingTaskId(null);
     }
   };
 
@@ -172,15 +185,22 @@ const Dashboard = () => {
                   autoFocus
                 />
                 <HStack>
-                  <Button size="sm" colorScheme="green" borderRadius={8} onClick={handleSaveTask}>
-                    <MdCheck />
-                    <Box ml={1}>Save</Box>
+                  <Button
+                    size="sm"
+                    colorScheme="green"
+                    borderRadius={8}
+                    onClick={handleSaveTask}
+                    disabled={isSavingTask}
+                  >
+                    {isSavingTask ? <Spinner size="sm" /> : <MdCheck />}
+                    <Box ml={1}>{isSavingTask ? "Saving..." : "Save"}</Box>
                   </Button>
                   <Button
                     size="sm"
                     variant="ghost"
                     color="red.300"
                     borderRadius={8}
+                    disabled={isSavingTask}
                     onClick={() => { setIsNewnote(false); setTaskTitle(""); }}
                   >
                     <MdClose />
@@ -261,20 +281,22 @@ const Dashboard = () => {
                         variant="ghost"
                         color="blue.300"
                         borderRadius={7}
+                        disabled={updatingTaskId === task._id || deletingTaskId === task._id}
                         onClick={() => handleUpdateTask(task._id, task.title)}
                         _hover={{ backgroundColor: "rgba(66,153,225,0.15)" }}
                       >
-                        <MdEdit fontSize={17} />
+                        {updatingTaskId === task._id ? <Spinner size="sm" /> : <MdEdit fontSize={17} />}
                       </Button>
                       <Button
                         size="sm"
                         variant="ghost"
                         color="red.400"
                         borderRadius={7}
+                        disabled={deletingTaskId === task._id || updatingTaskId === task._id}
                         onClick={() => handleDeletetask(task._id)}
                         _hover={{ backgroundColor: "rgba(245,101,101,0.15)" }}
                       >
-                        <MdDelete fontSize={17} />
+                        {deletingTaskId === task._id ? <Spinner size="sm" /> : <MdDelete fontSize={17} />}
                       </Button>
                     </HStack>
                   </Box>

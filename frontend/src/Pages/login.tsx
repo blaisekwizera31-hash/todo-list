@@ -1,4 +1,4 @@
-import { Button, Field, Flex, Box, Input, Text } from "@chakra-ui/react";
+import { Button, Field, Flex, Box, Input, Text, Spinner } from "@chakra-ui/react";
 import API from "../services/api";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -105,10 +105,11 @@ const Login = () => {
           colorScheme="blue"
           mt={1}
           loading={isLoading}
+          disabled={isLoading}
           _hover={{ transform: "scale(1.02)", transition: "0.2s" }}
           onClick={handleLogin}
         >
-          Login
+          {isLoading ? <Spinner size="sm" /> : "Login"}
         </Button>
 
         <Text color="whiteAlpha.600" textAlign="center" fontSize={13}>
